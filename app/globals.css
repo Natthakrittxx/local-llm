@@ -1,43 +1,101 @@
+/* Hallmark · genre: modern-minimal · macrostructure: Workbench (app shell) · theme: Cobalt · enrichment: none · nav: app sidebar · footer: none · tokens: ../tokens.css */
+/* Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V5 · contrast: pass (40–41) · honest: pass (46) · chrome: pass (47) · tokens: pass (48) · mobile: pass (34, 49, 50–57)
+ * deviations: body face Geist (project font) instead of Cobalt's Inter; mono carries one role (machine readouts) in more than two slots, per Cobalt's mono-label signature (gate 38) */
 @import "tailwindcss";
+@import "../tokens.css";
 @source "../node_modules/streamdown/dist/*.js";
 @source "../node_modules/@streamdown/code/dist/*.js";
 @source "../node_modules/@streamdown/math/dist/*.js";
 @source "../node_modules/@streamdown/mermaid/dist/*.js";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a;
-  --border: #e4e4e7;
+/* Utilities for the Hallmark tokens (bg-paper, text-ink, p-md, rounded-control, …).
+   `reference` = don't re-declare the variables, tokens.css owns them. */
+@theme inline reference {
+  --color-paper: var(--color-paper);
+  --color-paper-2: var(--color-paper-2);
+  --color-paper-3: var(--color-paper-3);
+  --color-rule: var(--color-rule);
+  --color-rule-2: var(--color-rule-2);
+  --color-neutral: var(--color-neutral);
+  --color-ink-2: var(--color-ink-2);
+  --color-ink: var(--color-ink);
+  --color-accent: var(--color-accent);
+  --color-accent-2: var(--color-accent-2);
+  --color-accent-ink: var(--color-accent-ink);
+  --color-error: var(--color-error);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+
+  --text-label: var(--text-label);
+  --text-meta: var(--text-meta);
+  --text-body: var(--text-body);
+  --text-title: var(--text-title);
+  --text-display: var(--text-display);
+
+  --spacing-3xs: var(--space-3xs);
+  --spacing-2xs: var(--space-2xs);
+  --spacing-xs: var(--space-xs);
+  --spacing-sm: var(--space-sm);
+  --spacing-md: var(--space-md);
+  --spacing-lg: var(--space-lg);
+  --spacing-xl: var(--space-xl);
+  --spacing-2xl: var(--space-2xl);
+
+  --radius-control: var(--radius-control);
+  --radius-card: var(--radius-card);
 }
 
-/* shadcn-style tokens streamdown's markdown styles expect */
+/* shadcn-style names streamdown's markdown styles expect, pointed at the Hallmark tokens */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-border: var(--border);
-  --color-sidebar: var(--muted);
-  --color-primary: var(--foreground);
-  --color-primary-foreground: var(--background);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--color-paper);
+  --color-foreground: var(--color-ink-2);
+  --color-muted: var(--color-paper-2);
+  --color-muted-foreground: var(--color-neutral);
+  --color-border: var(--color-rule);
+  --color-sidebar: var(--color-paper-2);
+  --color-primary: var(--color-accent);
+  --color-primary-foreground: var(--color-accent-ink);
+  --font-sans: var(--font-body);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --muted: #27272a;
-    --muted-foreground: #a1a1aa;
-    --border: #3f3f46;
+@layer base {
+  html,
+  body {
+    overflow-x: clip;
+  }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink-2);
+    font-family: var(--font-body);
+  }
+  /* instant, never animated */
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* One containment layer for streamdown blocks: the outer frame keeps its border, the inner body
+   is told apart by surface only. Unlayered so it beats streamdown's utilities. */
+[data-streamdown="code-block-body"],
+[data-streamdown="table-wrapper"] > div:has(> table),
+[data-streamdown="mermaid-block"] > div:has([data-streamdown="mermaid"]) {
+  border-color: transparent;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 150ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+  }
 }

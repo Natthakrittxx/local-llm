@@ -1,0 +1,71 @@
+/* Hallmark · genre: modern-minimal · macrostructure: Workbench (app shell) · theme: Cobalt
+ * Cobalt axes: paper cool-light (L 98.5 % · h 250) / display grotesk-sans / accent electric cobalt (h 258)
+ * Contrast-checked pairs (WCAG): ink 15.8 · ink-2 11.3 · neutral 5.3 · accent-on-paper 5.0 ·
+ * accent-ink-on-accent 5.0 · rule-2 boundary ≥ 3.0 — light and dark both pass.
+ */
+:root {
+  /* paper → ink, tinted toward the cobalt anchor (hue ~256) */
+  --color-paper:      oklch(98.5% 0.004 250);
+  --color-paper-2:    oklch(96.2% 0.006 252);
+  --color-paper-3:    oklch(93.5% 0.008 254);
+  --color-rule:       oklch(90% 0.008 255);   /* hairline dividers */
+  --color-rule-2:     oklch(64% 0.012 256);   /* control boundaries, ≥ 3:1 on paper */
+  --color-neutral:    oklch(52% 0.014 256);   /* meta text, readouts */
+  --color-ink-2:      oklch(34% 0.018 257);   /* body */
+  --color-ink:        oklch(24% 0.02 258);    /* headings, titles */
+  --color-accent:     oklch(54% 0.2 258);     /* the one signal: send, focus, live dot */
+  --color-accent-2:   oklch(48% 0.19 258);    /* accent hover */
+  --color-accent-ink: oklch(98.5% 0.004 250); /* text/icons on accent */
+  --color-focus:      var(--color-accent);
+  --color-error:      oklch(53% 0.19 27);
+
+  --font-display: var(--font-space-grotesk), ui-sans-serif, sans-serif;
+  --font-body:    var(--font-geist), ui-sans-serif, sans-serif;
+  --font-mono:    var(--font-geist-mono), ui-monospace, monospace; /* machine readouts + code */
+
+  /* major-third scale, five sizes */
+  --text-label:   0.75rem;
+  --text-meta:    0.875rem;
+  --text-body:    1rem;
+  --text-title:   1.25rem;
+  --text-display: clamp(1.75rem, 2.5vw + 1rem, 2.75rem);
+
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs:  0.5rem;
+  --space-sm:  0.75rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2.5rem;
+  --space-2xl: 4rem;
+
+  --radius-control: 6px;
+  --radius-card:    10px;
+
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:     cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+
+  --z-raised:   10;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-paper:      oklch(17% 0.012 258);
+    --color-paper-2:    oklch(20.5% 0.014 258);
+    --color-paper-3:    oklch(24% 0.016 258);
+    --color-rule:       oklch(28% 0.014 258);
+    --color-rule-2:     oklch(56% 0.016 258);
+    --color-neutral:    oklch(70% 0.014 256);
+    --color-ink-2:      oklch(88% 0.01 255);
+    --color-ink:        oklch(95% 0.008 250);
+    --color-accent:     oklch(70% 0.15 256);
+    --color-accent-2:   oklch(76% 0.13 256);
+    --color-accent-ink: oklch(17% 0.012 258);
+    --color-error:      oklch(72% 0.15 27);
+  }
+}

@@ -1,0 +1,13 @@
+[
+  {
+    "date": "2026-10-21",
+    "scope": "app",
+    "genre": "modern-minimal",
+    "macrostructure": "Workbench (app shell)",
+    "theme": "Cobalt",
+    "enrichment": "none",
+    "nav": "app sidebar",
+    "footer": "none",
+    "brief": "local-llm · Next.js chat UI for LM Studio Qwen models · audience: the developer testing models · use: live demos · tone: technical"
+  }
+]

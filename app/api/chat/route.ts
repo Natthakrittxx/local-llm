@@ -4,9 +4,8 @@ import {
   generateId,
   streamText,
   toUIMessageStream,
-  type UIMessage,
 } from "ai";
-import { isChatId, saveChat } from "@/lib/chats";
+import { type ChatMessage, isChatId, saveChat } from "@/lib/chats";
 import { fitContext } from "@/lib/context";
 import { contextLength, lmstudio } from "@/lib/lmstudio";
 
@@ -16,9 +15,10 @@ export async function POST(req: Request) {
     messages,
     model,
     fast,
-  }: { id: string; messages: UIMessage[]; model: string; fast: boolean } =
+  }: { id: string; messages: ChatMessage[]; model: string; fast: boolean } =
     await req.json();
   if (!isChatId(id)) return new Response("Invalid chat id", { status: 400 });
+  const started = Date.now();
 
   const result = streamText({
     model: lmstudio(model),
@@ -35,6 +35,12 @@ export async function POST(req: Request) {
       stream: result.stream,
       originalMessages: messages,
       generateMessageId: generateId,
+      // measured here, shown under each reply: model id, output tokens, wall time incl. prompt processing
+      messageMetadata: ({ part }) => {
+        if (part.type === "start") return { model };
+        if (part.type === "finish")
+          return { model, outputTokens: part.totalUsage.outputTokens, ms: Date.now() - started };
+      },
       // awaited before the stream closes, also runs when the user hits Stop
       onEnd: ({ messages }) => saveChat(id, messages),
       // ponytail: raw error text is fine for a local-only app; mask it before exposing publicly

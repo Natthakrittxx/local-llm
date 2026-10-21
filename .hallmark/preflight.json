@@ -1,0 +1,10 @@
+{
+  "date": "2026-10-21",
+  "framework": "Next.js 16.4.2 app router, Tailwind v4 via @tailwindcss/turbopack, cacheComponents on",
+  "fonts": "Space Grotesk (display) + Geist (body) + Geist Mono (readouts, code) via next/font in app/layout.tsx",
+  "palette": "Hallmark Cobalt tokens in tokens.css (OKLCH, light + dark), mapped to Tailwind utilities in app/globals.css; shadcn-style aliases kept for streamdown",
+  "motion": "none (motion-cut); button press, loading pulse, delayed loading-text fade",
+  "spacing": "named 4-pt scale (--space-3xs … --space-2xl) mapped to Tailwind spacing utilities",
+  "icons": "lucide-react",
+  "must_preserve": ["Tailwind v4 entry directives + @source lines", "streamdown alias tokens (--color-background, --color-muted, --color-border, --color-sidebar, --color-primary)", "light + dark mode"]
+}

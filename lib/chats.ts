@@ -2,7 +2,10 @@ import { mkdir, readdir, readFile, rm, stat, writeFile } from "node:fs/promises"
 import path from "node:path";
 import type { UIMessage } from "ai";
 
-type ChatFile = { title?: string; messages: UIMessage[] };
+// metadata is written by the API route: which model answered, and how fast
+export type ChatMessage = UIMessage<{ model?: string; outputTokens?: number; ms?: number }>;
+
+type ChatFile = { title?: string; messages: ChatMessage[] };
 
 const dir = path.join(process.cwd(), ".data", "chats");
 
@@ -28,7 +31,7 @@ async function writeChat(id: string, chat: ChatFile) {
 
 export const loadChat = async (id: string) => (await readChat(id)).messages;
 
-export const saveChat = async (id: string, messages: UIMessage[]) =>
+export const saveChat = async (id: string, messages: ChatMessage[]) =>
   writeChat(id, { ...(await readChat(id)), messages });
 
 export const renameChat = async (id: string, title: string) =>
