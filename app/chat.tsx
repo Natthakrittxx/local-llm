@@ -2,6 +2,8 @@
 
 import { useChat } from "@ai-sdk/react";
 import { useRef, useState } from "react";
+import { Streamdown } from "streamdown";
+import "streamdown/styles.css";
 
 export default function Chat({ models }: { models: string[] }) {
   const [input, setInput] = useState("");
@@ -40,12 +42,22 @@ export default function Chat({ models }: { models: string[] }) {
         {messages.map((m) => (
           <div
             key={m.id}
-            className={`whitespace-pre-wrap rounded p-3 ${
-              m.role === "user" ? "self-end bg-zinc-200 dark:bg-zinc-800" : ""
+            className={`rounded p-3 ${
+              m.role === "user" ? "self-end whitespace-pre-wrap bg-zinc-200 dark:bg-zinc-800" : ""
             }`}
           >
             {m.parts.map((part, i) => {
-              if (part.type === "text") return <span key={i}>{part.text}</span>;
+              if (part.type === "text")
+                return m.role === "user" ? (
+                  <span key={i}>{part.text}</span>
+                ) : (
+                  <Streamdown
+                    key={i}
+                    isAnimating={status === "streaming" && m.id === messages.at(-1)?.id}
+                  >
+                    {part.text}
+                  </Streamdown>
+                );
               if (part.type === "file" && part.mediaType.startsWith("image/"))
                 return (
                   // eslint-disable-next-line @next/next/no-img-element -- data URL, nothing to optimize
@@ -58,7 +70,7 @@ export default function Chat({ models }: { models: string[] }) {
                 );
               if (part.type === "reasoning")
                 return (
-                  <details key={i} className="mb-2 text-sm text-zinc-500">
+                  <details key={i} className="mb-2 whitespace-pre-wrap text-sm text-zinc-500">
                     <summary>Thinking</summary>
                     {part.text}
                   </details>

@@ -1,13 +1,24 @@
 @import "tailwindcss";
+@source "../node_modules/streamdown/dist/*.js";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --border: #e4e4e7;
 }
 
+/* shadcn-style tokens streamdown's markdown styles expect */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-sidebar: var(--muted);
+  --color-primary: var(--foreground);
+  --color-primary-foreground: var(--background);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -16,6 +27,9 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --muted: #27272a;
+    --muted-foreground: #a1a1aa;
+    --border: #3f3f46;
   }
 }
 
