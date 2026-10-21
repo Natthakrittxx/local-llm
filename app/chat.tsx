@@ -1,17 +1,42 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
+import type { UIMessage } from "ai";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
+import { code } from "@streamdown/code";
+import { math } from "@streamdown/math";
+import { mermaid } from "@streamdown/mermaid";
 import { Streamdown } from "streamdown";
+import "katex/dist/katex.min.css";
 import "streamdown/styles.css";
 
-export default function Chat({ models }: { models: string[] }) {
+const plugins = { code, math, mermaid };
+
+export default function Chat({
+  id,
+  models,
+  initialMessages,
+}: {
+  id: string;
+  models: string[];
+  initialMessages: UIMessage[];
+}) {
+  const router = useRouter();
   const [input, setInput] = useState("");
   const [model, setModel] = useState(models[0] ?? "");
   const [fast, setFast] = useState(true);
   const [files, setFiles] = useState<FileList>();
   const fileInput = useRef<HTMLInputElement>(null);
-  const { messages, sendMessage, status, stop, error } = useChat();
+  const { messages, sendMessage, status, stop, error } = useChat({
+    id,
+    messages: initialMessages,
+    onFinish: () => {
+      // chat is saved by now: put its id in the URL and refresh the sidebar list
+      window.history.replaceState(null, "", `/?id=${id}`);
+      router.refresh();
+    },
+  });
   const busy = status === "submitted" || status === "streaming";
 
   return (
@@ -53,6 +78,7 @@ export default function Chat({ models }: { models: string[] }) {
                 ) : (
                   <Streamdown
                     key={i}
+                    plugins={plugins}
                     isAnimating={status === "streaming" && m.id === messages.at(-1)?.id}
                   >
                     {part.text}
